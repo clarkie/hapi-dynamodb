@@ -28,5 +28,5 @@
         "test-tap": "lab -a code -r tap -o tests.tap",
         "test-cov-html": "lab -a code -r html -o coverage.html"
     },
-    "license": ""
+    "license": "BSD-3-Clause"
 }

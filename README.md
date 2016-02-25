@@ -28,5 +28,5 @@ server.register({ register: dynamodb, options: options }, function (err) {
 });
 ```
 
-[travis-badge]: https://api.travis-ci.org/WadiInternet/hapi-dynamodb.svg
-[travis-url]: https://travis-ci.org/WadiInternet/hapi-dynamodb
+[travis-badge]: https://travis-ci.org/amitmangal30/hapi-dynamodb.svg
+[travis-url]: https://travis-ci.org/amitmangal30/hapi-dynamodb

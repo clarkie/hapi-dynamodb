@@ -24,7 +24,7 @@ internals.responseSchemas.listTablesSchema = Joi.object().keys({
 internals.responseSchemas.scanSchema = Joi.array();
 
 internals.defaultOptions = {
-    dynamoEndpoint: 'http://120.0.0.1:8000/',
+    dynamoEndpoint: 'http://127.0.0.1:8000/',
     tables: [{
         TableName: internals.defaultTable,
         KeySchema: [
@@ -111,6 +111,47 @@ describe('dynamo-hapi plugin', function () {
         });
     });
 
+    it('should write item into a table in dynamodb', function (done) {
+
+        let Server = new Hapi.Server();
+        Server.connection();
+
+        Server.register({ register: DynamoHapi, options: internals.defaultOptions }, function (err) {
+
+            expect(err).to.not.exist();
+
+            let item = {
+                TableName: internals.defaultTable,
+                Item: {
+                    id: '/apple/',
+                    template_string: '<div></div>',
+                    platform: 'web'
+                }
+            };
+            Server.methods.dynamo.write(item, function (err, res) {
+
+                expect(err).to.not.exist();
+                done();
+            });
+        });
+    });
+
+    it('should delete an existing table in dynamodb', function (done) {
+
+        let Server = new Hapi.Server();
+        Server.connection();
+
+        Server.register({ register: DynamoHapi, options: internals.defaultOptions }, function (err) {
+
+            expect(err).to.not.exist();
+            Server.methods.dynamo.deleteTable(internals.defaultTable, function (err, res) {
+
+                expect(err).to.not.exist();
+                done();
+            });
+        });
+    });
+
     it('tries to describe a non-existant table in dynamodb', function (done) {
 
         let Server = new Hapi.Server();
@@ -145,22 +186,6 @@ describe('dynamo-hapi plugin', function () {
         });
     });
 
-    it('should delete an existing table in dynamodb', function (done) {
-
-        let Server = new Hapi.Server();
-        Server.connection();
-
-        Server.register({ register: DynamoHapi, options: internals.defaultOptions }, function (err) {
-
-            expect(err).to.not.exist();
-            Server.methods.dynamo.deleteTable(internals.defaultTable, function (err, res) {
-
-                expect(err).to.not.exist();
-                done();
-            });
-        });
-    });
-
     it('should list all tables in dynamodb', function (done) {
 
         let Server = new Hapi.Server();
@@ -177,31 +202,6 @@ describe('dynamo-hapi plugin', function () {
                     expect(err).to.not.exist();
                     expect(value).to.exist();
                 });
-                done();
-            });
-        });
-    });
-
-    it('should write item into a table in dynamodb', function (done) {
-
-        let Server = new Hapi.Server();
-        Server.connection();
-
-        Server.register({ register: DynamoHapi, options: internals.defaultOptions }, function (err) {
-
-            expect(err).to.not.exist();
-
-            let item = {
-                TableName: internals.defaultTable,
-                Item: {
-                    id: '/apple/',
-                    template_string: '<div></div>',
-                    platform: 'web'
-                }
-            };
-            Server.methods.dynamo.write(item, function (err, res) {
-
-                expect(err).to.not.exist();
                 done();
             });
         });

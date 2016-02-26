@@ -1,5 +1,5 @@
 {
-    "name": "dynamo-hapi",
+    "name": "hapi-dynamodb",
     "description": "Hapi plugin for DynamoDb",
     "version": "0.0.1",
     "repository": {
